@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_package = "com.bracketcove.graphsudoku";
+option java_multiple_files = true;
+
+message Statistics {
+  int64 fourEasy = 1;
+  int64 fourMedium = 2;
+  int64 fourHard = 3;
+  int64 nineEasy = 4;
+  int64 nineMedium = 5;
+  int64 nineHard = 6;
+}
