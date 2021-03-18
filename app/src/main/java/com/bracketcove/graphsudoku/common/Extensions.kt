@@ -4,7 +4,6 @@ import android.app.Activity
 import android.widget.Toast
 import com.bracketcove.graphsudoku.R
 import com.bracketcove.graphsudoku.domain.Difficulty
-import com.bracketcove.graphsudoku.domain.Messages
 
 internal fun Activity.makeToast(message: String) {
     Toast.makeText(
@@ -12,13 +11,6 @@ internal fun Activity.makeToast(message: String) {
         message,
         Toast.LENGTH_LONG
     ).show()
-}
-
-internal fun Activity.getStringRes(message: Messages): String {
-    return when (message) {
-        Messages.IO_ERROR_UPDATE -> getString(R.string.error_update)
-        Messages.IO_ERROR_READ -> getString(R.string.error_read)
-    }
 }
 
 internal fun Long.toTime(): String {

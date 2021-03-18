@@ -18,6 +18,12 @@ class ActiveGameViewModel {
     internal var subBoardState: ((HashMap<Int, SudokuTile>) -> Unit)? = null
     internal var subContentState: ((ActiveGameScreenState) -> Unit)? = null
     internal var subTimerState: ((Long) -> Unit)? = null
+
+    internal fun updateTimerState(){
+        timerState++
+        subTimerState?.invoke(timerState)
+    }
+
     internal var subIsCompleteState: ((Boolean) -> Unit)? = null
 
     internal var timerState: Long = 0L
@@ -59,10 +65,7 @@ class ActiveGameViewModel {
         subBoardState?.invoke(boardState)
     }
 
-    internal fun updateTimerState(){
-        timerState++
-        subTimerState?.invoke(timerState)
-    }
+
 
 
     internal fun updateBoardState(x: Int, y: Int, value: Int, hasFocus: Boolean) {
@@ -72,6 +75,10 @@ class ActiveGameViewModel {
         }
 
         subBoardState?.invoke(boardState)
+    }
+
+    internal fun showLoadingState() {
+        subContentState?.invoke(ActiveGameScreenState.LOADING)
     }
 
     internal fun updateFocusState(x: Int, y: Int) {

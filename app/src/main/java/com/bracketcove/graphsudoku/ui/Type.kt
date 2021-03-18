@@ -40,7 +40,7 @@ val statsLabel = TextStyle(
 val inputButton = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Black,
-    fontSize = 32.sp,
+    fontSize = 28.sp,
     textAlign = TextAlign.Center
 )
 
@@ -54,8 +54,8 @@ val newGameSubtitle = TextStyle(
 
 val activeGameSubtitle = TextStyle(
     fontFamily = FontFamily.Default,
-    fontWeight = FontWeight.Normal,
-    fontSize = 32.sp,
+    fontWeight = FontWeight.Medium,
+    fontSize = 26.sp,
     textAlign = TextAlign.Center,
 )
 

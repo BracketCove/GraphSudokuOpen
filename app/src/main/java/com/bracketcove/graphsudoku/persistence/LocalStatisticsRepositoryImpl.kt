@@ -1,5 +1,6 @@
 package com.bracketcove.graphsudoku.persistence
 
+import android.util.Log
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
@@ -113,18 +114,4 @@ class LocalStatisticsRepositoryImpl(
             else -> throw IOException()
         }
     }
-}
-
-object StatisticsSerializer : Serializer<Statistics> {
-    override val defaultValue: Statistics = Statistics.getDefaultInstance()
-
-    override fun readFrom(input: InputStream): Statistics {
-        try {
-            return Statistics.parseFrom(input)
-        } catch (exception: InvalidProtocolBufferException) {
-            throw CorruptionException("Cannot read proto.", exception)
-        }
-    }
-
-    override fun writeTo(t: Statistics, output: OutputStream) = t.writeTo(output)
 }

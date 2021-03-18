@@ -71,6 +71,9 @@ internal fun columnsAreInvalid(puzzle: SudokuPuzzle): Boolean {
     return false
 }
 
+internal fun superCliqueIsValid(superClique: LinkedList<SudokuNode>) {
+
+}
 
 /**
  * 1. Establish x and y values for one node in every subgrid
@@ -147,6 +150,8 @@ internal fun getNodesBySubgrid(graph: LinkedHashMap<Int,
     return edgeList
 }
 
+
+
 /**
  * Calculate the upper bound of each interval, and establish which upper bound defines
  * the subgrid within which the target sits
@@ -174,4 +179,18 @@ internal fun allSquaresAreNotEmpty(puzzle: SudokuPuzzle): Boolean {
         if (it[0].color == 0) return true
     }
     return false
+}
+
+internal fun SudokuPuzzle.print() {
+    var outputLine = ""
+    (1..boundary).forEach { yIndex ->
+        graph.values.filter { node ->
+            node.first.y == yIndex
+        }.forEach { node ->
+            outputLine += node.first.color
+            outputLine += " "
+        }
+        outputLine += "\n"
+    }
+    println(outputLine)
 }

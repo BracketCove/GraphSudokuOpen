@@ -4,11 +4,10 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.setContent
-import com.bracketcove.graphsudoku.common.getStringRes
+import com.bracketcove.graphsudoku.R
 import com.bracketcove.graphsudoku.common.makeToast
-import com.bracketcove.graphsudoku.domain.Messages
 import com.bracketcove.graphsudoku.ui.activegame.ActiveGameActivity
 import com.bracketcove.graphsudoku.ui.newgame.buildlogic.buildNewGameLogic
 
@@ -26,9 +25,7 @@ class NewGameActivity : AppCompatActivity(), NewGameContainer {
 
         setContent {
             NewGameScreen(
-                onEventHandler = {
-                    logic.onEvent(it)
-                },
+                onEventHandler = logic::onEvent,
                 viewModel
             )
         }
@@ -42,7 +39,7 @@ class NewGameActivity : AppCompatActivity(), NewGameContainer {
         logic.onEvent(NewGameEvent.OnStart)
     }
 
-    override fun showMessage(message: Messages) = makeToast(getStringRes(message))
+    override fun showError() = makeToast(getString(R.string.generic_error))
 
     override fun onDoneClick() {
         startActiveGameActivity()

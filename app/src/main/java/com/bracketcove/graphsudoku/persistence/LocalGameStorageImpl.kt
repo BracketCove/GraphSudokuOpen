@@ -19,7 +19,6 @@ class LocalGameStorageImpl(
         pathToStorageFile = File(fileStorageDirectory, FILE_NAME)
     }
 
-
     override suspend fun updateGame(
         game: SudokuPuzzle,
     ): GameStorageResult = withContext(Dispatchers.IO) {
@@ -77,8 +76,8 @@ class LocalGameStorageImpl(
             objectInputStream.close()
 
             return (game)
-        } catch (fileNotFoundException: FileNotFoundException) {
-            throw fileNotFoundException
+        } catch (e: FileNotFoundException) {
+            throw e
         }
     }
 }

@@ -15,10 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GraphSudoku">
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-1130311534154301~2392728421"/>
-
         <activity
             android:name="com.bracketcove.graphsudoku.ui.activegame.ActiveGameActivity"
             android:label="@string/app_name"

@@ -123,3 +123,17 @@ Hard:
 
 It seems as though a good approximation for the difficulty of a sudoku puzzle is indeed the density,
 but what remains uncertain is whether or not 
+
+#Revisiting Difficulty & Uniqueness
+It has become apparent that remove a fixed number of clues is a general indicator of difficulty,
+but there are two problems that need to be addressed:
+- Uniqueness is very apparent in size 4x4 sudokus, insofar as it is very common to get puzzle which
+have multiple solutions
+- Having testing several easy 9x9 sudokus, it is also apparent that some of them are still quite
+difficult; especially towards the end of the puzzle oddly enough.
+
+I suppose that establishing Uniqueness will be a problem that requires a blunt algorithm to test for
+a wide variety of solutions, whereas difficulty will be a more complex algorithm but easier to 
+determine, for the reason that I can already examine the number of guess that can be made for each
+node in each clique to establish that there is at least one that can be inferred.
+

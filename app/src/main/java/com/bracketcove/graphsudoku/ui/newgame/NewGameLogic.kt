@@ -1,12 +1,9 @@
 package com.bracketcove.graphsudoku.ui.newgame
 
-import android.util.Log
 import com.bracketcove.graphsudoku.common.BaseLogic
 import com.bracketcove.graphsudoku.common.DispatcherProvider
-import com.bracketcove.graphsudoku.domain.Difficulty
 import com.bracketcove.graphsudoku.domain.IGameRepository
 import com.bracketcove.graphsudoku.domain.IStatisticsRepository
-import com.bracketcove.graphsudoku.domain.Messages
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -31,7 +28,10 @@ class NewGameLogic(
     override fun onEvent(event: NewGameEvent) {
         when (event) {
             is NewGameEvent.OnStart -> onStart()
-            is NewGameEvent.OnDonePressed -> onDonePressed()
+            is NewGameEvent.OnDonePressed -> {
+                viewModel.loadingState = true
+                onDonePressed()
+            }
             is NewGameEvent.OnSizeChanged -> viewModel.settingsState =
                 viewModel.settingsState.copy(boundary = event.boundary)
             is NewGameEvent.OnDifficultyChanged -> viewModel.settingsState =
@@ -42,13 +42,14 @@ class NewGameLogic(
     //write to both repos
     private fun onDonePressed() {
         launch {
+
             gameRepo.updateSettings(
                 viewModel.settingsState,
                 {
                     createNewGame(viewModel.settingsState.boundary)
                 },
                 {
-                    container?.showMessage(Messages.IO_ERROR_UPDATE)
+                    container?.showError()
                 }
             )
         }
@@ -61,7 +62,7 @@ class NewGameLogic(
                 container?.onDoneClick()
             },
             {
-                container?.showMessage(Messages.IO_ERROR_UPDATE)
+                container?.showError()
                 jobTracker.cancel()
                 container?.onDoneClick()
             }
@@ -72,13 +73,12 @@ class NewGameLogic(
         launch {
             gameRepo.getSettings(
                 {
-                    //TODO change loading state
                     viewModel.settingsState = it
                     getStatistics()
                 },
                 {
                     jobTracker.cancel()
-                    container?.showMessage(Messages.IO_ERROR_READ)
+                    container?.showError()
                     container?.onDoneClick()
                 }
             )
@@ -93,7 +93,7 @@ class NewGameLogic(
                     viewModel.loadingState = false
                 },
                 {
-                    container?.showMessage(Messages.IO_ERROR_READ)
+                    container?.showError()
                 }
             )
         }

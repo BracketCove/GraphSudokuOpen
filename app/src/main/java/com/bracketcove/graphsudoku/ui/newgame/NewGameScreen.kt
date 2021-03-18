@@ -1,8 +1,7 @@
 package com.bracketcove.graphsudoku.ui.newgame
 
-import androidx.compose.animation.animateAsState
-import androidx.compose.animation.core.animateAsState
-import androidx.compose.animation.transition
+
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -10,16 +9,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.runtime.*
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -32,52 +32,51 @@ import com.bracketcove.graphsudoku.domain.Difficulty
 import com.bracketcove.graphsudoku.domain.Settings
 import com.bracketcove.graphsudoku.domain.UserStatistics
 import com.bracketcove.graphsudoku.ui.*
-import com.google.ads.AdSize
+import com.bracketcove.graphsudoku.ui.activegame.ActiveGameScreenState
 
+private const val TITLE = "New Game"
 
 @Composable
 fun NewGameScreen(
     onEventHandler: (NewGameEvent) -> Unit,
     viewModel: NewGameViewModel
 ) {
-    var showLoading by remember { mutableStateOf(true) }
+    val contentStateTransition = remember {
+        MutableTransitionState(
+            true
+        )
+    }
 
-    viewModel.subLoadingState = { showLoading = it }
+    val transition = updateTransition(contentStateTransition)
 
-    val contentStateTransition = transition(
-        newGameViewTransition(),
-        showLoading
-    )
+    val loadingAlpha by transition.animateFloat(
+        transitionSpec = { tween(durationMillis = 300) }
+    ) {
+        if (it) 1f else 0f
+    }
+
+    val mainAlpha by transition.animateFloat(
+        transitionSpec = { tween(durationMillis = 300) }
+    ) {
+        if (!it) 1f else 0f
+    }
+
+    viewModel.subLoadingState = {
+        contentStateTransition.targetState = it
+    }
 
     GraphSudokuTheme {
-        Column {
-            if (showLoading) Box(
-                Modifier
-                    .alpha(
-                        contentStateTransition[loadingAlphaKey]
-                    )
-            ) {
-                LoadingScreen()
-            }
-            else Box(
-                Modifier
-                    .alpha(
-                        contentStateTransition[newGameAlphaKey]
-                    )
-            ) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.primary)
+        ) {
+            Box(Modifier.alpha(loadingAlpha)) { LoadingScreen() }
+            if (!contentStateTransition.currentState) Box(Modifier.alpha(mainAlpha)) {
                 NewGameContent(
                     onEventHandler,
                     viewModel
                 )
-            }
-
-            Box(
-                Modifier.fillMaxWidth()
-                    .height(90.dp)
-                    .background(MaterialTheme.colors.primary)
-                    .padding(bottom = 8.dp)
-            ) {
-                BannerAd()
             }
         }
     }
@@ -88,7 +87,11 @@ fun NewGameContent(
     onEventHandler: (NewGameEvent) -> Unit,
     viewModel: NewGameViewModel
 ) {
-    Surface(Modifier.fillMaxSize()) {
+    Surface(
+        Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+    ) {
         ConstraintLayout(Modifier.background(MaterialTheme.colors.primary)) {
             val (toolbar,
                 sizeDropdown,
@@ -96,24 +99,21 @@ fun NewGameContent(
                 stats
             ) = createRefs()
 
-
-            NewGameToolbar(
-                clickHandler = {
-                    onEventHandler.invoke(
-                        NewGameEvent.OnDonePressed
-                    )
-                },
-                Modifier.constrainAs(toolbar) {
+            AppToolbar(
+                modifier = Modifier.constrainAs(toolbar) {
                     top.linkTo(parent.top)
-                }
-            )
+                },
+                title = TITLE,
+            ) { DoneIcon(onEventHandler = onEventHandler) }
 
-            Box(Modifier.fillMaxWidth()
-                .wrapContentHeight()
-                .padding(top = 32.dp)
-                .constrainAs(sizeDropdown) {
-                    top.linkTo(toolbar.bottom)
-                }) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(top = 32.dp)
+                    .constrainAs(sizeDropdown) {
+                        top.linkTo(toolbar.bottom)
+                    }) {
                 DropdownWithTitle(
                     onEventHandler,
                     stringResource(R.string.dimensions),
@@ -126,11 +126,13 @@ fun NewGameContent(
                 )
             }
 
-            Box(Modifier.fillMaxWidth()
-                .wrapContentHeight()
-                .constrainAs(diffDropdown) {
-                    top.linkTo(sizeDropdown.bottom)
-                }) {
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .constrainAs(diffDropdown) {
+                        top.linkTo(sizeDropdown.bottom)
+                    }) {
                 DropdownWithTitle(
                     onEventHandler,
                     stringResource(R.string.difficulty_title),
@@ -185,76 +187,80 @@ fun DropdownWithTitle(
         Text(
             text = titleText,
             style = newGameSubtitle.copy(color = MaterialTheme.colors.secondary),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(start = 32.dp),
         )
 
-        DropdownMenu(
-            toggle = {
-                Row(Modifier.clickable(onClick = { showMenu = true })) {
+        Row(
+            Modifier.clickable(
+                onClick = { showMenu = true }
+            )
+        ) {
+            Text(
+                text = if (isSizeMenu) items[menuIndex] as String
+                else stringResource(id = (items[menuIndex] as Difficulty).toLocalizedResource),
+                style = newGameSubtitle.copy(
+                    color = MaterialTheme.colors.onPrimary,
+                    fontWeight = FontWeight.Normal
+                ),
+                modifier = Modifier
+                    .wrapContentSize()
+            )
 
-                    Text(
-                        text = if (isSizeMenu) items[menuIndex] as String
-                        else stringResource(id = (items[menuIndex] as Difficulty).toLocalizedResource),
-                        style = newGameSubtitle.copy(
-                            color = MaterialTheme.colors.onPrimary,
-                            fontWeight = FontWeight.Normal
-                        ),
+            Icon(
+                contentDescription = stringResource(R.string.dropdown),
+                imageVector = Icons.Outlined.ArrowDropDown,
+                tint = MaterialTheme.colors.secondary,
+                modifier = Modifier
+                    .size(48.dp)
+                    .rotate(
+                        animateFloatAsState(
+                            if (!showMenu) 0f else 180f,
+                        ).value
+                    )
+                    .align(Alignment.CenterVertically)
+            )
+
+            DropdownMenu(
+                expanded = showMenu,
+                onDismissRequest = { showMenu = false },
+            ) {
+                items.forEachIndexed { index, _ ->
+                    DropdownMenuItem(
+                        onClick = {
+                            menuIndex = index
+                            showMenu = false
+                            onEventHandler.invoke(
+                                //the first.toString.toInt is so we don't get the ASCII value
+                                if (isSizeMenu) NewGameEvent.OnSizeChanged(
+                                    (items[index] as String)
+                                        .first().toString().toInt()
+                                )
+                                else NewGameEvent.OnDifficultyChanged((items[index] as Difficulty))
+                            )
+                        },
                         modifier = Modifier
                             .wrapContentSize()
-                    )
-
-                    Icon(
-                        imageVector = Icons.Outlined.ArrowDropDown
-                            .copy(defaultHeight = 48.dp, defaultWidth = 48.dp),
-                        tint = MaterialTheme.colors.secondary,
-                        modifier = Modifier
-                            .rotate(
-                                animateAsState(
-                                    if (showMenu == false) 0f else 180f,
-                                ).value
-                            ).align(Alignment.CenterVertically)
-                    )
-                }
-            },
-            expanded = showMenu,
-            onDismissRequest = { showMenu = false },
-            toggleModifier = Modifier
-                .wrapContentSize(),
-            dropdownModifier = Modifier
-                .wrapContentSize()
-                .background(MaterialTheme.colors.surface),
-        ) {
-            items.forEachIndexed { index, _ ->
-                DropdownMenuItem(
-                    onClick = {
-                        menuIndex = index
-                        showMenu = false
-                        onEventHandler.invoke(
-                            //the first.toString.toInt is so we don't get the ASCII value
-                            if (isSizeMenu) NewGameEvent.OnSizeChanged(
-                                (items[index] as String)
-                                    .first().toString().toInt()
+                            .background(MaterialTheme.colors.surface)
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = if (isSizeMenu) items[index] as String
+                                else stringResource(id = (items[index] as Difficulty).toLocalizedResource),
+                                style = dropdownText(MaterialTheme.colors.primaryVariant),
+                                modifier = Modifier.padding(end = 8.dp)
                             )
-                            else NewGameEvent.OnDifficultyChanged((items[index] as Difficulty))
-                        )
-                    }
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = if (isSizeMenu) items[index] as String
-                            else stringResource(id = (items[index] as Difficulty).toLocalizedResource),
-                            style = dropdownText(MaterialTheme.colors.primaryVariant),
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
 
-                        if (!isSizeMenu) {
-                            (0..index).forEach {
-                                Icon(
-                                    imageVector = Icons.Filled.Star,
-                                    tint = MaterialTheme.colors.primaryVariant,
-                                    modifier = Modifier.preferredSize(36.dp)
-                                )
+                            if (!isSizeMenu) {
+                                (0..index).forEach {
+                                    Icon(
+                                        contentDescription = stringResource(R.string.difficulty),
+                                        imageVector = Icons.Filled.Star,
+                                        tint = MaterialTheme.colors.primaryVariant,
+                                        modifier = Modifier.size(36.dp)
+                                    )
+                                }
                             }
                         }
                     }
@@ -340,6 +346,23 @@ fun StatisticsView(
 }
 
 @Composable
+fun DoneIcon(onEventHandler: (NewGameEvent) -> Unit) {
+    Icon(
+        imageVector = Icons.Filled.Done,
+        tint = if (MaterialTheme.colors.isLight) textColorLight else textColorDark,
+        contentDescription = null,
+        modifier = Modifier
+            .clickable(onClick = {
+                onEventHandler.invoke(
+                    NewGameEvent.OnDonePressed
+                )
+            })
+            .padding(horizontal = 16.dp, vertical = 16.dp)
+            .height(36.dp),
+    )
+}
+
+@Composable
 fun StatsColumn(
     stats: List<Long>,
     modifier: Modifier
@@ -374,11 +397,12 @@ fun StatsColumn(
 
                 (0..index).forEach {
                     Icon(
+                        contentDescription = stringResource(R.string.difficulty),
                         imageVector = if (isZero) Icons.Outlined.StarBorder
                         else Icons.Filled.Star,
                         tint = if (isZero) Color.White
                         else MaterialTheme.colors.onPrimary,
-                        modifier = Modifier.preferredSize(24.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
@@ -386,30 +410,6 @@ fun StatsColumn(
 
         Spacer(
             Modifier.height(16.dp)
-        )
-    }
-}
-
-@Preview
-@Composable
-fun previewNewGameContent() {
-    GraphSudokuTheme {
-        NewGameContent(onEventHandler = { /*TODO*/ },
-            viewModel = NewGameViewModel().apply {
-                settingsState = Settings(
-                    Difficulty.MEDIUM,
-                    9
-                )
-
-                statisticsState = UserStatistics(
-                    80,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-                )
-            }
         )
     }
 }

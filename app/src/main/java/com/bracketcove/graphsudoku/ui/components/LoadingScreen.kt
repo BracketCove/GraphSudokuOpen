@@ -2,6 +2,7 @@ package com.bracketcove.graphsudoku.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
@@ -13,26 +14,24 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bracketcove.graphsudoku.R
 
-//Common components for Compose UI
-@OptIn(ExperimentalAnimationApi::class)
-@Preview
+
 @Composable
 fun LoadingScreen() {
-
     Surface(
         color = if (MaterialTheme.colors.isLight) primaryGreen else primaryCharcoal,
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxHeight(.8f)
+            .fillMaxWidth()
     ) {
         Column(
-            Modifier
-                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -58,12 +57,15 @@ fun LogoSlideIn() {
         visible = true,
         initiallyVisible = false,
         enter = fadeIn(
-            animSpec = tween(durationMillis = 200)
+            animationSpec = tween(
+                durationMillis = 200
+            )
         )
     ) {
         Image(
-            imageVector = vectorResource(R.drawable.ic_launcher_foreground),
-            modifier = Modifier.size(128.dp)
+            painter = painterResource(R.drawable.ic_launcher_foreground),
+            modifier = Modifier.size(128.dp),
+            contentDescription = stringResource(R.string.logo_description)
         )
     }
 }
@@ -75,7 +77,9 @@ fun TextAlphaIn(text: String) {
         visible = true,
         initiallyVisible = false,
         enter = fadeIn(
-            animSpec = tween(durationMillis = 200)
+            animationSpec = tween(
+                durationMillis = 200
+            )
         )
     ) {
         Text(

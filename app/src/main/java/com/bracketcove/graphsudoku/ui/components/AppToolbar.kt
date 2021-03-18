@@ -1,36 +1,32 @@
-package com.bracketcove.graphsudoku.ui.activegame
+package com.bracketcove.graphsudoku.ui.newgame
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredHeight
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.bracketcove.graphsudoku.ui.textColorDark
 import com.bracketcove.graphsudoku.ui.textColorLight
 
-private const val TITLE = "Graph Sudoku"
+//Anything which is not local to a class probably makes sense to make top level
 
 @Composable
-fun ActiveGameToolbar(
-    clickHandler: (() -> Unit)
-) {
+fun AppToolbar(
+    modifier: Modifier,
+    title: String,
+    icon: @Composable () -> Unit
+    ) {
     TopAppBar(
+        modifier = modifier,
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = Color.White,
         title = {
             Row {
                 Text(
-                    text = TITLE,
+                    text = title,
                     style = MaterialTheme.typography.h6,
                     color = if (MaterialTheme.colors.isLight) textColorLight else textColorDark,
                     textAlign = TextAlign.Start,
@@ -40,16 +36,7 @@ fun ActiveGameToolbar(
 
         },
         actions = {
-            Icon(
-                imageVector = Icons.Filled.Add,
-                tint = if (MaterialTheme.colors.isLight) textColorLight else textColorDark,
-                modifier = Modifier
-                    .clickable(onClick = { clickHandler.invoke() })
-                    .padding(horizontal = 16.dp, vertical = 16.dp)
-                    .preferredHeight(36.dp),
-
-                )
-
+            icon()
         }
     )
 }

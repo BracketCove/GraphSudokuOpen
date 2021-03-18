@@ -8,11 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val LightColorPalette = lightColors(
-        primary = primaryGreen,
-        secondary = textColorLight,
-        surface = lightGrey,
-        primaryVariant = gridLineColorLight,
-        onPrimary = accentAmber,
+    primary = primaryGreen,
+    secondary = textColorLight,
+    surface = lightGrey,
+    primaryVariant = gridLineColorLight,
+    onPrimary = accentAmber,
+    onSurface = accentAmber
 )
 
 private val DarkColorPalette = darkColors(
@@ -24,18 +25,22 @@ private val DarkColorPalette = darkColors(
     surface = lightGreyAlpha,
     //grid lines of sudoku board
     primaryVariant = gridLineColorLight,
-    onPrimary = accentAmber
+    onPrimary = accentAmber,
+
+    onSurface = accentAmber
+
 )
 
 @Composable
 fun GraphSudokuTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit) {
+    content: @Composable () -> Unit
+) {
 
     MaterialTheme(
-            colors = if (darkTheme) DarkColorPalette else LightColorPalette,
-            typography = typography,
-            shapes = shapes,
-            content = content
+        colors = if (darkTheme) DarkColorPalette else LightColorPalette,
+        typography = typography,
+        shapes = shapes,
+        content = content
     )
 }

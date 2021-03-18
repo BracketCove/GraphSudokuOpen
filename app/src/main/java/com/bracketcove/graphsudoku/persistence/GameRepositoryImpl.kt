@@ -2,14 +2,18 @@ package com.bracketcove.graphsudoku.persistence
 
 import com.bracketcove.graphsudoku.computationlogic.puzzleIsComplete
 import com.bracketcove.graphsudoku.domain.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
 
 class GameRepositoryImpl(
     private val gameStorage: IGameDataStorage,
     private val settingsStorage: ISettingsStorage
 ) : IGameRepository {
-    override suspend fun saveGame(elapsedTime: Long, onSuccess: (Unit) -> Unit,
-                                  onError: (Exception) -> Unit) {
+    override suspend fun saveGame(
+        elapsedTime: Long, onSuccess: (Unit) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
         when (val getCurrentGameResult = gameStorage.getCurrentGame()) {
             is GameStorageResult.OnSuccess -> {
                 gameStorage.updateGame(
@@ -21,7 +25,7 @@ class GameRepositoryImpl(
                 onSuccess.invoke(Unit)
             }
             is GameStorageResult.OnError -> {
-                    onError.invoke(IOException())
+                onError.invoke(getCurrentGameResult.exception)
             }
         }
     }
@@ -47,7 +51,7 @@ class GameRepositoryImpl(
         x: Int,
         y: Int,
         color: Int,
-        elapsedTime:Long,
+        elapsedTime: Long,
         onSuccess: (Boolean) -> Unit,
         onError: (Exception) -> Unit
     ) {
@@ -135,12 +139,15 @@ class GameRepositoryImpl(
     }
 
     private suspend fun createAndWriteNewGame(settings: Settings): GameStorageResult =
-        gameStorage.updateGame(
-            SudokuPuzzle(
-                settings.boundary,
-                settings.difficulty
+        withContext(Dispatchers.IO) {
+            gameStorage.updateGame(
+                SudokuPuzzle(
+                    settings.boundary,
+                    settings.difficulty
+                )
             )
-        )
+        }
+
 
     override suspend fun getSettings(onSuccess: (Settings) -> Unit, onError: (Exception) -> Unit) {
         when (val getSettingsResult = settingsStorage.getSettings()) {

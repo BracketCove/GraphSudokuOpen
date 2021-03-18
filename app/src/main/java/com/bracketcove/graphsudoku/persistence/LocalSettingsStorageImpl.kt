@@ -1,5 +1,6 @@
 package com.bracketcove.graphsudoku.persistence
 
+import android.util.Log
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.Serializer
@@ -79,18 +80,4 @@ private fun Int.verify(): Int {
         16 -> this
         else -> 4
     }
-}
-
-object GameSettingsSerializer : Serializer<GameSettings> {
-    override val defaultValue: GameSettings = GameSettings.getDefaultInstance()
-
-    override fun readFrom(input: InputStream): GameSettings {
-        try {
-            return GameSettings.parseFrom(input)
-        } catch (exception: InvalidProtocolBufferException) {
-            throw CorruptionException("Cannot read proto.", exception)
-        }
-    }
-
-    override fun writeTo(t: GameSettings, output: OutputStream) = t.writeTo(output)
 }

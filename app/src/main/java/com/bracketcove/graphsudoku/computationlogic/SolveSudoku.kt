@@ -9,7 +9,7 @@ import kotlin.random.Random
 
 
 internal fun SudokuPuzzle.solve()
-        : SudokuPuzzle{
+        : SudokuPuzzle {
     //nodes that have been assigned (not including nodes seeded from seedColors()
     val assignments = LinkedList<SudokuNode>()
 
@@ -56,11 +56,11 @@ internal fun SudokuPuzzle.solve()
              */
             partialBacktrack = true
             assignments.takeLast(assignments.size / 2)
-                    .forEach { node ->
-                        node.color = 0
-                        uncoloredNodes.add(node)
-                        assignments.remove(node)
-                    }
+                .forEach { node ->
+                    node.color = 0
+                    uncoloredNodes.add(node)
+                    assignments.remove(node)
+                }
 
             assignmentAttempts = 0
         }
@@ -104,7 +104,6 @@ internal fun SudokuPuzzle.solve()
 
 fun getPossibleValues(adjList: LinkedList<SudokuNode>, boundary: Int): List<Int> {
     val options = mutableListOf<Int>()
-
     (1..boundary).forEach {
         adjList.first.color = it
 
@@ -119,3 +118,45 @@ fun getPossibleValues(adjList: LinkedList<SudokuNode>, boundary: Int): List<Int>
     adjList.first.color = 0
     return options
 }
+
+/**
+ * This version accepts a Key in the event that we don't just want to match against the first
+ * element in the list
+ *
+ *
+ */
+fun getPossibleValues(
+    key: SudokuNode,
+    adjList: LinkedList<SudokuNode>,
+    boundary: Int
+): List<Int> {
+    val options = mutableListOf<Int>()
+
+    val iMaxX = getIntervalMax(boundary, key.x)
+    val iMaxY = getIntervalMax(boundary, key.y)
+
+    (1..boundary).forEach {
+        key.color = it
+
+        val occurrences = adjList.filter { node ->
+            when {
+                (node.x == key.x && node.y != key.y) -> true
+                (node.x != key.x && node.y == key.y) -> true
+                (
+                        iMaxX == getIntervalMax(boundary, node.x) &&
+                                iMaxY == getIntervalMax(boundary, node.y)
+                        ) -> true
+                else -> false
+            }
+        }.count { node ->
+            node.color == it
+        }
+
+        if (occurrences == 1) options.add(it)
+    }
+
+    //reset to 0
+    key.color = 0
+    return options
+}
+

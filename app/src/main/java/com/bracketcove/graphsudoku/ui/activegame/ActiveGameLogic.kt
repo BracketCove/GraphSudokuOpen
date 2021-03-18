@@ -4,16 +4,9 @@ import com.bracketcove.graphsudoku.common.BaseLogic
 import com.bracketcove.graphsudoku.common.DispatcherProvider
 import com.bracketcove.graphsudoku.domain.IGameRepository
 import com.bracketcove.graphsudoku.domain.IStatisticsRepository
-import com.bracketcove.graphsudoku.domain.Messages
 import com.bracketcove.graphsudoku.domain.SudokuPuzzle
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
-
-/**
- * I noticed that subtracting 1 from elapsed time lead the Timer in the UI to seem more consistent;
- * otherwise it would jump ahead by 2ish seconds which looking wierd.
- */
-private const val TIME_OFFSET = 1
 
 class ActiveGameLogic(
     private val container: ActiveGameContainer?,
@@ -24,6 +17,25 @@ class ActiveGameLogic(
 ) : BaseLogic<ActiveGameEvent>(dispatcher),
     CoroutineScope {
 
+    override fun onEvent(event: ActiveGameEvent) {
+        when (event) {
+            is ActiveGameEvent.OnInput -> onInput(
+                event.input,
+                viewModel.timerState
+            )
+            ActiveGameEvent.OnNewGameClicked -> onNewGameClicked()
+            ActiveGameEvent.OnStart -> onStart()
+            ActiveGameEvent.OnStop -> onStop()
+            is ActiveGameEvent.OnTileFocused -> onTileFocused(event.x, event.y)
+        }
+    }
+
+    //Time offset makes the UI timer look more consistent
+    private val Long.timeOffset: Long
+        get() {
+            return if (this <= 0) 0
+            else this - 1
+        }
 
     private var timerTracker: Job? = null
 
@@ -51,19 +63,6 @@ class ActiveGameLogic(
         }
     }
 
-    override fun onEvent(event: ActiveGameEvent) {
-        when (event) {
-            is ActiveGameEvent.OnInput -> onInput(
-                event.input,
-                viewModel.timerState
-            )
-            ActiveGameEvent.OnNewGameClicked -> onNewGameClicked()
-            ActiveGameEvent.OnStart -> onStart()
-            ActiveGameEvent.OnStop -> onStop()
-            is ActiveGameEvent.OnTileFocused -> onTileFocused(event.x, event.y)
-        }
-    }
-
     private fun onTileFocused(x: Int, y: Int) {
         viewModel.updateFocusState(x, y)
     }
@@ -72,11 +71,11 @@ class ActiveGameLogic(
         if (!viewModel.isCompleteState) {
             launch {
                 gameRepo.saveGame(
-                    viewModel.timerState - TIME_OFFSET,
+                    viewModel.timerState.timeOffset,
                     { cancelStuff() },
                     {
                         cancelStuff()
-                        container?.showMessage(Messages.IO_ERROR_UPDATE)
+                        container?.showError()
                     }
                 )
             }
@@ -106,21 +105,24 @@ class ActiveGameLogic(
                     }
                 },
                 {
-                    container?.showMessage(Messages.IO_ERROR_READ)
-                    container?.restart()
+                    //Probably this happened when the App is first run or data deleted.
+                    //Prompt the user to create a new game immediately.
+                    container?.onNewGameClick()
                 }
             )
         }
 
 
     private fun onNewGameClicked() = launch {
+        viewModel.showLoadingState()
+
         if (!viewModel.isCompleteState) {
             gameRepo.getCurrentGame(
                 { puzzle, _ ->
                     updateWithTime(puzzle)
                 },
                 {
-                    container?.showMessage(Messages.IO_ERROR_UPDATE)
+                    container?.showError()
                 }
             )
         } else {
@@ -130,11 +132,11 @@ class ActiveGameLogic(
     }
 
     private fun updateWithTime(puzzle: SudokuPuzzle) = launch {
-        gameRepo.updateGame(puzzle.copy(elapsedTime = viewModel.timerState - TIME_OFFSET),
+        gameRepo.updateGame(puzzle.copy(elapsedTime = viewModel.timerState.timeOffset),
             { navigateToNewGame() },
             {
                 navigateToNewGame()
-                container?.showMessage(Messages.IO_ERROR_UPDATE)
+                container?.showError()
             }
         )
     }
@@ -175,7 +177,7 @@ class ActiveGameLogic(
                 },
                 //error
                 {
-                    container?.showMessage(Messages.IO_ERROR_UPDATE)
+                    container?.showError()
                 }
             )
         }
@@ -192,7 +194,7 @@ class ActiveGameLogic(
                 viewModel.updateCompleteState()
             },
             {
-                container?.showMessage(Messages.IO_ERROR_UPDATE)
+                container?.showError()
                 viewModel.updateCompleteState()
             }
         )

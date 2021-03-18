@@ -1,10 +1,8 @@
 <resources>
     <string name="app_name">Graph Sudoku</string>
-    <string name="ad_unit_id">ca-app-pub-1130311534154301/7826563092</string>
-    <string name="error_update">Error updating data.</string>
-    <string name="error_read">Error retrieving data.</string>
     <string name="dimensions">Dimensions:</string>
     <string name="difficulty_title">Difficulty:</string>
+    <string name="difficulty">Difficulty</string>
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
@@ -14,4 +12,6 @@
     <string name="puzzle_complete">Puzzle Complete!</string>
     <string name="new_record">"New Record: "</string>
     <string name="total_time">"Total Time: "</string>
+    <string name="logo_description">App Logo.</string>
+    <string name="dropdown">Dropdown Arrow</string>
 </resources>

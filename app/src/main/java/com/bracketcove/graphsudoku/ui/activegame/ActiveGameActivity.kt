@@ -1,21 +1,17 @@
 package com.bracketcove.graphsudoku.ui.activegame
 
+import android.annotation.TargetApi
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.setContent
-import com.bracketcove.graphsudoku.common.getStringRes
+import com.bracketcove.graphsudoku.R
 import com.bracketcove.graphsudoku.common.makeToast
-import com.bracketcove.graphsudoku.domain.Messages
 import com.bracketcove.graphsudoku.ui.newgame.NewGameActivity
-import java.util.*
 
 class ActiveGameActivity : AppCompatActivity(), ActiveGameContainer {
     private lateinit var logic: ActiveGameLogic
-
-    internal object BuildTimer {
-        val timer = Timer()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,17 +20,13 @@ class ActiveGameActivity : AppCompatActivity(), ActiveGameContainer {
 
         setContent {
             ActiveGameScreen(
-                onEventHandler = {
-                    logic.onEvent(it)
-                },
+                onEventHandler = logic::onEvent,
                 viewModel
             )
         }
 
         logic = buildActiveGameLogic(this, viewModel, applicationContext)
     }
-
-
 
     override fun onStart() {
         super.onStart()
@@ -59,16 +51,5 @@ class ActiveGameActivity : AppCompatActivity(), ActiveGameContainer {
         )
     }
 
-    override fun showMessage(message: Messages) = makeToast(getStringRes(message))
-
-    override fun restart() {
-        startActivity(
-            Intent(
-                this,
-                ActiveGameActivity::class.java
-            )
-        )
-
-        finish()
-    }
+    override fun showError() = makeToast(getString(R.string.generic_error))
 }
