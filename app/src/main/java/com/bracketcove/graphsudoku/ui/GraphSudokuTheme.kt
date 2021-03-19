@@ -36,7 +36,6 @@ fun GraphSudokuTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-
     MaterialTheme(
         colors = if (darkTheme) DarkColorPalette else LightColorPalette,
         typography = typography,

@@ -65,19 +65,17 @@ fun NewGameScreen(
         contentStateTransition.targetState = it
     }
 
-    GraphSudokuTheme {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.primary)
-        ) {
-            Box(Modifier.alpha(loadingAlpha)) { LoadingScreen() }
-            if (!contentStateTransition.currentState) Box(Modifier.alpha(mainAlpha)) {
-                NewGameContent(
-                    onEventHandler,
-                    viewModel
-                )
-            }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.primary)
+    ) {
+        Box(Modifier.alpha(loadingAlpha)) { LoadingScreen() }
+        if (!contentStateTransition.currentState) Box(Modifier.alpha(mainAlpha)) {
+            NewGameContent(
+                onEventHandler,
+                viewModel
+            )
         }
     }
 }

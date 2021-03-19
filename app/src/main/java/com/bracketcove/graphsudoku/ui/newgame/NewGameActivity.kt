@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import com.bracketcove.graphsudoku.R
 import com.bracketcove.graphsudoku.common.makeToast
+import com.bracketcove.graphsudoku.ui.GraphSudokuTheme
 import com.bracketcove.graphsudoku.ui.activegame.ActiveGameActivity
 import com.bracketcove.graphsudoku.ui.newgame.buildlogic.buildNewGameLogic
 
@@ -24,10 +25,12 @@ class NewGameActivity : AppCompatActivity(), NewGameContainer {
         val viewModel = NewGameViewModel()
 
         setContent {
-            NewGameScreen(
-                onEventHandler = logic::onEvent,
-                viewModel
-            )
+            GraphSudokuTheme() {
+                NewGameScreen(
+                    onEventHandler = logic::onEvent,
+                    viewModel
+                )
+            }
         }
 
         logic = buildNewGameLogic(this, viewModel, applicationContext)

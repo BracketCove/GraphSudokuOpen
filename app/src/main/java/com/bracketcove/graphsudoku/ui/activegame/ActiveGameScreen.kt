@@ -76,52 +76,50 @@ fun ActiveGameScreen(
         contentTransitionState.targetState = it
     }
 
-    GraphSudokuTheme {
-        Column(
-            Modifier
-                .background(MaterialTheme.colors.primary)
-                .fillMaxHeight()
+    Column(
+        Modifier
+            .background(MaterialTheme.colors.primary)
+            .fillMaxHeight()
+    ) {
+
+        AppToolbar(
+            modifier = Modifier
+                .wrapContentHeight(),
+            title = TITLE,
         ) {
+            NewGameIcon(onEventHandler = onEventHandler)
+        }
 
-            AppToolbar(
-                modifier = Modifier
-                    .wrapContentHeight(),
-                title = TITLE,
-            ) {
-                NewGameIcon(onEventHandler = onEventHandler)
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(top = 4.dp),
-                contentAlignment = Alignment.TopCenter
-            ) {
-                when (contentTransitionState.currentState) {
-                    ActiveGameScreenState.ACTIVE -> Box(
-                        Modifier
-                            .alpha(activeAlpha)
-                    ) {
-                        GameContent(
-                            onEventHandler,
-                            viewModel
-                        )
-                    }
-                    ActiveGameScreenState.COMPLETE -> Box(
-                        Modifier
-                            .alpha(completeAlpha)
-                    ) {
-                        GameCompleteContent(
-                            viewModel.timerState,
-                            viewModel.isNewRecordState
-                        )
-                    }
-                    ActiveGameScreenState.LOADING -> Box(
-                        Modifier
-                            .alpha(loadingAlpha)
-                    ) {
-                        LoadingScreen()
-                    }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(top = 4.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            when (contentTransitionState.currentState) {
+                ActiveGameScreenState.ACTIVE -> Box(
+                    Modifier
+                        .alpha(activeAlpha)
+                ) {
+                    GameContent(
+                        onEventHandler,
+                        viewModel
+                    )
+                }
+                ActiveGameScreenState.COMPLETE -> Box(
+                    Modifier
+                        .alpha(completeAlpha)
+                ) {
+                    GameCompleteContent(
+                        viewModel.timerState,
+                        viewModel.isNewRecordState
+                    )
+                }
+                ActiveGameScreenState.LOADING -> Box(
+                    Modifier
+                        .alpha(loadingAlpha)
+                ) {
+                    LoadingScreen()
                 }
             }
         }
@@ -273,9 +271,9 @@ fun SudokuInputButton(
         modifier = Modifier
             .requiredSize(56.dp)
             .padding(2.dp),
-    border = BorderStroke(ButtonDefaults.OutlinedBorderSize, MaterialTheme.colors.onPrimary),
+        border = BorderStroke(ButtonDefaults.OutlinedBorderSize, MaterialTheme.colors.onPrimary),
 
-    ) {
+        ) {
         Text(
             text = number.toString(),
             style = inputButton.copy(color = MaterialTheme.colors.onPrimary),
@@ -312,7 +310,7 @@ fun NewGameIcon(onEventHandler: (ActiveGameEvent) -> Unit) {
             .clickable(onClick = { onEventHandler.invoke(ActiveGameEvent.OnNewGameClicked) })
             .padding(horizontal = 16.dp, vertical = 16.dp)
             .height(36.dp),
-        )
+    )
 }
 
 @Composable

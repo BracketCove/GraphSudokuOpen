@@ -4,7 +4,6 @@ import androidx.compose.ui.graphics.Color
 
 val primaryGreen = Color(0XFF00bc00)
 val primaryCharcoal = Color(0xFF2b2b2b)
-val accentMint = Color(0xFF00a2ff)
 val accentAmber = Color(0xFFffe400)
 
 val textColorLight = Color(0xDCFFFFFF)
