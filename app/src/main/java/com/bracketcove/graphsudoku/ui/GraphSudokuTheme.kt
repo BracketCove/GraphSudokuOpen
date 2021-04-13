@@ -26,9 +26,7 @@ private val DarkColorPalette = darkColors(
     //grid lines of sudoku board
     primaryVariant = gridLineColorLight,
     onPrimary = accentAmber,
-
     onSurface = accentAmber
-
 )
 
 @Composable

@@ -1,20 +1,11 @@
 package com.bracketcove.graphsudoku.ui.activegame
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import com.bracketcove.graphsudoku.domain.Difficulty
 import com.bracketcove.graphsudoku.domain.SudokuPuzzle
 import com.bracketcove.graphsudoku.domain.getHash
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.util.*
-import kotlin.collections.HashMap
-import kotlin.concurrent.fixedRateTimer
 
 class ActiveGameViewModel {
 
-    //This
     internal var subBoardState: ((HashMap<Int, SudokuTile>) -> Unit)? = null
     internal var subContentState: ((ActiveGameScreenState) -> Unit)? = null
     internal var subTimerState: ((Long) -> Unit)? = null
@@ -94,17 +85,6 @@ class ActiveGameViewModel {
         isCompleteState = true
         subContentState?.invoke(ActiveGameScreenState.COMPLETE)
     }
-
-
-    /**
-     * In order to simplify state management, I'll keep a virtual copy of the board which is
-     * simplified from the Graph version that gets passed in.
-     *
-     * I made it nullable so that if it is null, we create a new one, otherwise we just update the
-     * current one make things more efficient.
-     */
-
-
 }
 
 /**

@@ -1,10 +1,9 @@
 package com.bracketcove.graphsudoku
 
 import com.bracketcove.graphsudoku.computationlogic.*
-import com.bracketcove.graphsudoku.domain.Difficulty
-import com.bracketcove.graphsudoku.domain.SudokuPuzzle
-import com.bracketcove.graphsudoku.domain.SudokuNode
-import com.bracketcove.graphsudoku.domain.getHash
+import com.bracketcove.graphsudoku.domain.*
+import com.bracketcove.graphsudoku.domain.UserStatistics
+import com.bracketcove.graphsudoku.ui.newgame.NewGameLogic
 import org.junit.Test
 import java.util.*
 import kotlin.collections.LinkedHashMap
@@ -15,6 +14,8 @@ import kotlin.collections.LinkedHashMap
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class GraphSudokuAlgorithmTests {
+
+
 
     /**
      * Notes:

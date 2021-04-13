@@ -1,8 +1,6 @@
 package com.bracketcove.graphsudoku.ui.activegame
 
-import android.annotation.TargetApi
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity

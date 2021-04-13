@@ -25,7 +25,7 @@ class NewGameActivity : AppCompatActivity(), NewGameContainer {
         val viewModel = NewGameViewModel()
 
         setContent {
-            GraphSudokuTheme() {
+            GraphSudokuTheme {
                 NewGameScreen(
                     onEventHandler = logic::onEvent,
                     viewModel

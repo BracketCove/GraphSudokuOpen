@@ -19,7 +19,7 @@ internal val Context.settingsDataStore: DataStore<GameSettings> by dataStore(
 private object GameSettingsSerializer : Serializer<GameSettings> {
     override val defaultValue: GameSettings = GameSettings.getDefaultInstance()
 
-    override fun readFrom(input: InputStream): GameSettings {
+    override suspend fun readFrom(input: InputStream): GameSettings {
         try {
             return GameSettings.parseFrom(input)
         } catch (exception: InvalidProtocolBufferException) {
@@ -27,7 +27,7 @@ private object GameSettingsSerializer : Serializer<GameSettings> {
         }
     }
 
-    override fun writeTo(t: GameSettings, output: OutputStream) = t.writeTo(output)
+    override suspend fun writeTo(t: GameSettings, output: OutputStream) = t.writeTo(output)
 }
 
 internal val Context.statsDataStore: DataStore<Statistics> by dataStore(
@@ -39,7 +39,7 @@ internal val Context.statsDataStore: DataStore<Statistics> by dataStore(
 private object StatisticsSerializer : Serializer<Statistics> {
     override val defaultValue: Statistics = Statistics.getDefaultInstance()
 
-    override fun readFrom(input: InputStream): Statistics {
+    override suspend fun readFrom(input: InputStream): Statistics {
         try {
             return Statistics.parseFrom(input)
         } catch (exception: InvalidProtocolBufferException) {
@@ -47,5 +47,5 @@ private object StatisticsSerializer : Serializer<Statistics> {
         }
     }
 
-    override fun writeTo(t: Statistics, output: OutputStream) = t.writeTo(output)
+    override suspend fun writeTo(t: Statistics, output: OutputStream) = t.writeTo(output)
 }

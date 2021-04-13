@@ -8,7 +8,10 @@ import java.util.*
 import kotlin.random.Random
 
 
-internal fun buildNewSudoku(boundary: Int, difficulty: Difficulty): SudokuPuzzle = buildEmptyGraph(boundary, difficulty)
+internal fun buildNewSudoku(
+    boundary: Int,
+    difficulty: Difficulty
+): SudokuPuzzle = buildEmptyGraph(boundary, difficulty)
         .buildEdges()
         .seedColors()
         .solve()
