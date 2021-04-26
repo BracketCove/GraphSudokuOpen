@@ -14,8 +14,8 @@ class NewGameLogic(
     private val viewModel: NewGameViewModel,
     private val gameRepo: IGameRepository,
     private val statsRepo: IStatisticsRepository,
-    dispatcher: DispatcherProvider
-) : BaseLogic<NewGameEvent>(dispatcher),
+    private val dispatcher: DispatcherProvider
+) : BaseLogic<NewGameEvent>(),
     CoroutineScope {
 
     init {

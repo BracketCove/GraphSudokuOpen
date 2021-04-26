@@ -16,8 +16,8 @@ class ActiveGameLogic(
     private val viewModel: ActiveGameViewModel,
     private val gameRepo: IGameRepository,
     private val statsRepo: IStatisticsRepository,
-    dispatcher: DispatcherProvider
-) : BaseLogic<ActiveGameEvent>(dispatcher),
+    private val dispatcher: DispatcherProvider
+) : BaseLogic<ActiveGameEvent>(),
     CoroutineScope {
 
     override fun onEvent(event: ActiveGameEvent) {
