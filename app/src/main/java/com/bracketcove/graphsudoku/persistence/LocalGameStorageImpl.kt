@@ -12,12 +12,8 @@ private const val FILE_NAME = "game_state.txt"
 
 class LocalGameStorageImpl(
     fileStorageDirectory: String,
+    private val pathToStorageFile: File = File(fileStorageDirectory, FILE_NAME)
 ) : IGameDataStorage {
-    private val pathToStorageFile: File
-
-    init {
-        pathToStorageFile = File(fileStorageDirectory, FILE_NAME)
-    }
 
     override suspend fun updateGame(
         game: SudokuPuzzle,

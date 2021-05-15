@@ -33,45 +33,45 @@ class LocalSettingsStorageImpl(
         }
 
 
-    override suspend fun updateSettings(settings: Settings): SettingsStorageResult {
-        try {
-            dataStore.updateData { gameSettings ->
-                gameSettings.toBuilder()
-                    .setBoundary(settings.boundary)
-                    .setDifficulty(settings.difficulty.toProto())
-                    .build()
+    override suspend fun updateSettings(settings: Settings): SettingsStorageResult =
+        withContext(Dispatchers.IO) {
+            try {
+                dataStore.updateData { gameSettings ->
+                    gameSettings.toBuilder()
+                        .setBoundary(settings.boundary)
+                        .setDifficulty(settings.difficulty.toProto)
+                        .build()
+                }
+
+                SettingsStorageResult.OnComplete
+
+            } catch (e: Exception) {
+                SettingsStorageResult.OnError(e)
             }
-
-            return SettingsStorageResult.OnComplete
-
-        } catch (e: Exception) {
-            return SettingsStorageResult.OnError(e)
         }
-    }
 }
 
 private val GameSettings.toSettings: Settings
     get() = Settings(
-        this.difficulty.toDomain(),
+        this.difficulty.toDomain,
         this.boundary.verify()
     )
 
-private fun GameSettings.ProtoDifficulty.toDomain(): Difficulty {
-    return when (this.number) {
-        1 -> Difficulty.EASY
-        2 -> Difficulty.MEDIUM
-        3 -> Difficulty.HARD
-        else -> Difficulty.MEDIUM
-    }
-}
+private val GameSettings.ProtoDifficulty.toDomain: Difficulty
+    get() = when (this.number) {
+            1 -> Difficulty.EASY
+            2 -> Difficulty.MEDIUM
+            3 -> Difficulty.HARD
+            else -> Difficulty.MEDIUM
+        }
 
-private fun Difficulty.toProto(): GameSettings.ProtoDifficulty {
-    return when (this) {
+private val Difficulty.toProto: GameSettings.ProtoDifficulty
+    get() =  when (this) {
         Difficulty.EASY -> GameSettings.ProtoDifficulty.EASY
         Difficulty.MEDIUM -> GameSettings.ProtoDifficulty.MEDIUM
         Difficulty.HARD -> GameSettings.ProtoDifficulty.HARD
     }
-}
+
 
 private fun Int.verify(): Int {
     return when (this) {

@@ -138,9 +138,8 @@ class GameRepositoryImpl(
         }
     }
 
-    private suspend fun createAndWriteNewGame(settings: Settings): GameStorageResult =
-        withContext(Dispatchers.IO) {
-            gameStorage.updateGame(
+    private suspend fun createAndWriteNewGame(settings: Settings): GameStorageResult {
+            return gameStorage.updateGame(
                 SudokuPuzzle(
                     settings.boundary,
                     settings.difficulty

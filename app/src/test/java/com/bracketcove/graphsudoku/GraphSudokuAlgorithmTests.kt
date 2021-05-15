@@ -3,6 +3,8 @@ package com.bracketcove.graphsudoku
 import com.bracketcove.graphsudoku.computationlogic.*
 import com.bracketcove.graphsudoku.domain.*
 import com.bracketcove.graphsudoku.domain.UserStatistics
+import com.bracketcove.graphsudoku.ui.activegame.ActiveGameContainer
+import com.bracketcove.graphsudoku.ui.activegame.ActiveGameLogic
 import com.bracketcove.graphsudoku.ui.newgame.NewGameLogic
 import org.junit.Test
 import java.util.*
@@ -14,7 +16,6 @@ import kotlin.collections.LinkedHashMap
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class GraphSudokuAlgorithmTests {
-
 
 
     /**

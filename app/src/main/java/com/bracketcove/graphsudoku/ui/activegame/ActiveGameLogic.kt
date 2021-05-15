@@ -11,6 +11,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Why?
+ *
+ * - Code becomes easier to build in isolation
+ * - Code becomes easier to test because we can give Fake/Mock test classes
+ * - Code becomes easier to change over time
+ *
+ */
 class ActiveGameLogic(
     private val container: ActiveGameContainer?,
     private val viewModel: ActiveGameViewModel,
@@ -115,7 +123,6 @@ class ActiveGameLogic(
             )
         }
 
-
     private fun onNewGameClicked() = launch {
         viewModel.showLoadingState()
 
@@ -131,7 +138,6 @@ class ActiveGameLogic(
         } else {
             navigateToNewGame()
         }
-
     }
 
     private fun updateWithTime(puzzle: SudokuPuzzle) = launch {

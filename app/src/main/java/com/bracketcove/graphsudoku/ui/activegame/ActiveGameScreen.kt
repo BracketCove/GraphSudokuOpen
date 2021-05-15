@@ -304,7 +304,12 @@ fun NewGameIcon(onEventHandler: (ActiveGameEvent) -> Unit) {
         tint = if (MaterialTheme.colors.isLight) textColorLight else textColorDark,
         contentDescription = null,
         modifier = Modifier
-            .clickable(onClick = { onEventHandler.invoke(ActiveGameEvent.OnNewGameClicked) })
+            .clickable(onClick = {
+                onEventHandler.invoke(
+                    ActiveGameEvent.OnNewGameClicked
+                )
+            }
+            )
             .padding(horizontal = 16.dp, vertical = 16.dp)
             .height(36.dp),
     )

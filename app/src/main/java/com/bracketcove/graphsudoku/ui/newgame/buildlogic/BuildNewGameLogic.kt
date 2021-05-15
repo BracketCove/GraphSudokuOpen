@@ -19,7 +19,7 @@ internal fun buildNewGameLogic(
             LocalGameStorageImpl(context.filesDir.path),
             LocalSettingsStorageImpl(context.settingsDataStore)
         ),
-        LocalStatisticsRepositoryImpl(
+        LocalStatisticsStorageImpl(
             context.statsDataStore
         ),
         ProductionDispatcherProvider

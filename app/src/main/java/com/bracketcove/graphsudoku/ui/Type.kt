@@ -44,7 +44,6 @@ val inputButton = TextStyle(
     textAlign = TextAlign.Center
 )
 
-
 val newGameSubtitle = TextStyle(
     fontFamily = FontFamily.Default,
     fontWeight = FontWeight.Light,

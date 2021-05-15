@@ -18,7 +18,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 
-class LocalStatisticsRepositoryImpl(
+class LocalStatisticsStorageImpl(
     private val dataStore: DataStore<Statistics>
 ) : IStatisticsRepository {
     override suspend fun getStatistics(

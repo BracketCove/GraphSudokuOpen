@@ -24,7 +24,6 @@ fun AppToolbar(
         backgroundColor = MaterialTheme.colors.primary,
         contentColor = Color.White,
         title = {
-            Row {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.h6,
@@ -32,8 +31,6 @@ fun AppToolbar(
                     textAlign = TextAlign.Start,
                     maxLines = 1
                 )
-            }
-
         },
         actions = {
             icon()
