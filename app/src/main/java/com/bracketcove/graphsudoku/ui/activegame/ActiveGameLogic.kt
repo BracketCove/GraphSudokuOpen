@@ -11,14 +11,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-/**
- * Why?
- *
- * - Code becomes easier to build in isolation
- * - Code becomes easier to test because we can give Fake/Mock test classes
- * - Code becomes easier to change over time
- *
- */
 class ActiveGameLogic(
     private val container: ActiveGameContainer?,
     private val viewModel: ActiveGameViewModel,
@@ -27,6 +19,24 @@ class ActiveGameLogic(
     private val dispatcher: DispatcherProvider
 ) : BaseLogic<ActiveGameEvent>(),
     CoroutineScope {
+
+    inline fun startCoroutineTimer(
+        crossinline action: () -> Unit
+    ) = launch {
+        while (true) {
+            action()
+            delay(1000)
+        }
+    }
+
+    //Time offset makes the UI timer look more consistent
+    private val Long.timeOffset: Long
+        get() {
+            return if (this <= 0) 0
+            else this - 1
+        }
+
+    private var timerTracker: Job? = null
 
     override fun onEvent(event: ActiveGameEvent) {
         when (event) {
@@ -41,14 +51,7 @@ class ActiveGameLogic(
         }
     }
 
-    //Time offset makes the UI timer look more consistent
-    private val Long.timeOffset: Long
-        get() {
-            return if (this <= 0) 0
-            else this - 1
-        }
 
-    private var timerTracker: Job? = null
 
     init {
         //allows cancellation
@@ -58,21 +61,7 @@ class ActiveGameLogic(
     override val coroutineContext: CoroutineContext
         get() = dispatcher.provideUIContext() + jobTracker
 
-    inline fun startCoroutineTimer(
-        delayMillis: Long = 0,
-        repeatMillis: Long = 1000,
-        crossinline action: () -> Unit
-    ) = launch {
-        delay(delayMillis)
-        if (repeatMillis > 0) {
-            while (true) {
-                action()
-                delay(repeatMillis)
-            }
-        } else {
-            action()
-        }
-    }
+
 
     private fun onTileFocused(x: Int, y: Int) {
         viewModel.updateFocusState(x, y)

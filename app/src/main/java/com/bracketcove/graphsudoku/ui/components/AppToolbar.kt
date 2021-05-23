@@ -21,7 +21,9 @@ fun AppToolbar(
     ) {
     TopAppBar(
         modifier = modifier,
-        backgroundColor = MaterialTheme.colors.primary,
+        backgroundColor = MaterialTheme
+            .colors
+            .primary,
         contentColor = Color.White,
         title = {
                 Text(
