@@ -271,17 +271,20 @@ fun testPair(
         pairNode.color = options[1]
 
         return true
-    } else if (!firstConfigIsValid && secondConfigIsValid) {
+    }
+    else if (!firstConfigIsValid && secondConfigIsValid) {
         firstNode.color = options[1]
         pairNode.color = options[0]
 
         return true
-    } else if (firstConfigIsValid && secondConfigIsValid) {
+    }
+    else if (firstConfigIsValid && secondConfigIsValid) {
         //50% of the time, this code works 100% of the time.
         firstNode.color = options[1]
         pairNode.color = options[0]
         return true
-    } else {
+    }
+    else {
         firstNode.color = 0
         pairNode.color = 0
         return false
@@ -338,8 +341,18 @@ internal fun getSuperClique(first: SudokuNode, puzzle: SudokuPuzzle): LinkedList
     return superClique
 }
 
+
+
+
 enum class SolvingStrategy {
     BASIC,
     ADVANCED,
     UNSOLVABLE
 }
+
+
+
+
+
+
+

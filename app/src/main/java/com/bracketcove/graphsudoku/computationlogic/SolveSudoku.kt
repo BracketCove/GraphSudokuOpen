@@ -122,8 +122,6 @@ fun getPossibleValues(adjList: LinkedList<SudokuNode>, boundary: Int): List<Int>
 /**
  * This version accepts a Key in the event that we don't just want to match against the first
  * element in the list
- *
- *
  */
 fun getPossibleValues(
     key: SudokuNode,

@@ -74,7 +74,7 @@ fun ActiveGameScreen(
     //Our remember delegate prepares compose for updates, but we also need a way to actually update
     //the value. We do this by binding a lambda expression to one of the Function Types which
     //our ViewModel possesses. When one of those functions is invoked in the ViewModel,
-    //the program automatically jumps and executes this code within our composable.
+    //the program automatically jumps to and executes this code within our composable.
     //This is what actually triggers the Recomposition.
     viewModel.subContentState = {
         contentTransitionState.targetState = it
@@ -87,7 +87,7 @@ fun ActiveGameScreen(
     val transition = updateTransition(contentTransitionState)
 
     val loadingAlpha by transition.animateFloat(
-        //The transition spec allows to tell compose details about what the animation should
+        //The transition spec tells compose details about what the animation should
         //look like. Essentially, this means we don't have to write our own mathematical
         //instructions, which is great for someone like me who sucks at arithmetic.
         transitionSpec = { tween(durationMillis = 300) }
@@ -276,7 +276,7 @@ fun GameContent(
                     .constrainAs(diff) {
                         top.linkTo(board.bottom)
                         end.linkTo(parent.end)
-                    },
+                    }
             ) {
                 (0..viewModel.difficulty.ordinal).forEach {
                     Icon(

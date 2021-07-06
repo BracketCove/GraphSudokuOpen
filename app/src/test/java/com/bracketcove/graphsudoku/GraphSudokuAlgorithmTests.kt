@@ -351,34 +351,24 @@ class GraphSudokuAlgorithmTests {
      *
      * NOTE: By unique, the random numbers may not be repeated, lest they violate the rules of the
      * game!
-     *
-     *
-     *
      */
     @Test
     fun testGraphColorSeed() {
         val fourGraph = buildNewSudoku(4, Difficulty.MEDIUM).graph
         val coloredNodesFour = fourGraph.entries.filter { it.value.first.color != 0 }.count()
-//        assert(coloredNodesFour == 4)
+        assert(coloredNodesFour == 3)
         assert(puzzleIsValid(SudokuPuzzle(4, Difficulty.MEDIUM, fourGraph)))
 
         val nineGraph = buildNewSudoku(9, Difficulty.MEDIUM).graph
         val coloredNodesNine = nineGraph.entries.filter { it.value.first.color != 0 }.count()
-        //  assert(coloredNodesNine == 20)
+          assert(coloredNodesNine == 20)
         assert(puzzleIsValid(SudokuPuzzle(9, Difficulty.MEDIUM, nineGraph)))
 
 
         val sixteenGraph = buildNewSudoku(16, Difficulty.MEDIUM).graph
         val coloredNodesSixteen = sixteenGraph.entries.filter { it.value.first.color != 0 }.count()
-        //       assert(coloredNodesSixteen == 64)
+               assert(coloredNodesSixteen == 64)
         assert(puzzleIsValid(SudokuPuzzle(16, Difficulty.MEDIUM, sixteenGraph)))
-
-
-        val twentyfiveGraph = buildNewSudoku(25, Difficulty.MEDIUM).graph
-        val coloredNodesTwentyFive =
-            twentyfiveGraph.entries.filter { it.value.first.color != 0 }.count()
-        //     assert(coloredNodesTwentyFive == 156)
-        assert(puzzleIsValid(SudokuPuzzle(25, Difficulty.MEDIUM, twentyfiveGraph)))
 
     }
 

@@ -11,7 +11,7 @@ import kotlin.random.Random
 internal fun buildNewSudoku(
     boundary: Int,
     difficulty: Difficulty
-): SudokuPuzzle = buildEmptyGraph(boundary, difficulty)
+): SudokuPuzzle = buildNodes(boundary, difficulty)
         .buildEdges()
         .seedColors()
         .solve()
@@ -35,7 +35,7 @@ internal fun buildNewSudoku(
  *
  *
  *  */
-internal fun buildEmptyGraph(n: Int, difficulty: Difficulty): SudokuPuzzle {
+internal fun buildNodes(n: Int, difficulty: Difficulty): SudokuPuzzle {
     val newMap = LinkedHashMap<Int, LinkedList<SudokuNode>>()
 
     (1..n).forEach { xIndex ->
@@ -134,13 +134,8 @@ internal fun LinkedList<SudokuNode>.mergeWithoutRepeats(new: List<SudokuNode>) {
  * 9 boundary: expect 27 numbers (33%), which will be two passes
  * 16 boundary: expect 64 numbers (25%), which will be four passes
  * 25 boundary: expect 175 numbers (28%), which will be six passes
- *
- * Based on that, I think I will check the allocations after each individual allocation and fire
- * a break (return)
- *
  */
 internal fun SudokuPuzzle.seedColors(): SudokuPuzzle {
-    val endRange: Int = (boundary * boundary * 0.25).toInt()
     //numbers which have been allocated and are no longer unique
     val allocatedNumbers = mutableListOf<Int>()
 
@@ -206,17 +201,8 @@ internal fun SudokuPuzzle.seedColors(): SudokuPuzzle {
 
                 if (boundary == 4 || allocatedNumbers.size == boundary - 1) return this
                 else if (allocatedNumbers.size == boundary) {
-//                    this.values.chunked(boundary).forEach { sublist ->
-//                        var outputLine = ""
-//                        sublist.forEach {
-//                            outputLine += it.first.color
-//                            outputLine += " "
-//                        }
-//                        println(outputLine)
-//                    }
                     return this
                 }
-
             }
         }
         byRow = !byRow
