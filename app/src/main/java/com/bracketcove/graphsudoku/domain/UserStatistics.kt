@@ -6,5 +6,5 @@ data class UserStatistics(
     val fourHard: Long = 0,
     val nineEasy: Long = 0,
     val nineMedium: Long = 0,
-    val nineHard: Long = 0
+    val nineHard: Long = 0,
 )
