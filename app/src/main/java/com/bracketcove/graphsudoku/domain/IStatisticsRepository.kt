@@ -1,5 +1,7 @@
 package com.bracketcove.graphsudoku.domain
 
+import java.lang.Exception
+
 /**
  * Repository (Data I/O mechanism like Databases or Network Adapters)
  * Facade Pattern
@@ -18,8 +20,12 @@ package com.bracketcove.graphsudoku.domain
  *
  */
 interface IStatisticsRepository {
-    suspend fun getStatistics(onSuccess: (UserStatistics) -> Unit,
-                              onError: (Exception) -> Unit)
+
+    suspend fun getStatistics(
+        onSuccess: (UserStatistics) -> Unit,
+        onError: (Exception) -> Unit
+    )
+
     suspend fun updateStatistic(
         time: Long,
         diff: Difficulty,

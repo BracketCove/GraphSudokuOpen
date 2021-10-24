@@ -22,33 +22,29 @@ interface IGameRepository {
         onError: (Exception) -> Unit
     )
 
-    /**
-     * Here we care if the puzzle is complete or not, along with if the update is successful
-     */
     suspend fun updateNode(
         x: Int,
         y: Int,
         color: Int,
         elapsedTime: Long,
-        onSuccess: (isComplete: Boolean) -> Unit, onError: (Exception) -> Unit
+        onSuccess: (isComplete: Boolean) -> Unit,
+        onError: (Exception) -> Unit
     )
 
     suspend fun getCurrentGame(
-        onSuccess: (currentGame: SudokuPuzzle, isComplete: Boolean) -> Unit,
+        onSuccess: (currentGame: SudokuPuzzle, isComplete: Boolean) -> Unit
+    )
+
+    suspend fun getSettings(
+        onSuccess: (Settings) -> Unit,
         onError: (Exception) -> Unit
     )
 
-    suspend fun createNewGame(
-        settings: Settings,
-        onSuccess: () -> Unit,
-        onError: (Exception) -> Unit
-    )
-
-    suspend fun getSettings(onSuccess: (Settings) -> Unit, onError: (Exception) -> Unit)
     suspend fun updateSettings(
         settings: Settings,
         onSuccess: (Unit) -> Unit,
         onError: (Exception) -> Unit
     )
 }
+
 
