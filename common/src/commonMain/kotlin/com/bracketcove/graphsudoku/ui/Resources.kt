@@ -1,0 +1,16 @@
+package com.bracketcove.graphsudoku.ui
+
+const val STR_DIFF_EASY = "EASY"
+const val STR_DIFF_MED = "MEDIUM"
+const val STR_DIFF_HARD = "HARD"
+const val STR_APP_NAME = "Graph Sudoku"
+const val STR_DIMENS = "Dimensions:"
+const val STR_DIFFICULTY = "Difficulty"
+const val STR_DIFFICULTY_TITLE = "Difficulty:"
+const val STR_LOADING = "Graph Sudoku"
+const val STR_GAME_COMPLETE = "Game Complete!"
+const val STR_GENERIC_ERROR = "An error has occurred."
+const val STR_NEW_RECORD = "New Record: "
+const val STR_TOTAL_TIME = "Total Time: "
+const val STR_LOGO_DESCRIPTION = "App Logo. "
+const val STR_DROPDOWN_ARROW = "Dropdown Arrow"

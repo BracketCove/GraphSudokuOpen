@@ -1,27 +1,23 @@
 package com.bracketcove.graphsudoku.ui.newgame.buildlogic
 
-import android.content.Context
-import com.bracketcove.graphsudoku.common.ProductionDispatcherProvider
-import com.bracketcove.graphsudoku.persistence.*
-import com.bracketcove.graphsudoku.ui.newgame.NewGameContainer
+import com.bracketcove.graphsudoku.persistence.DatabaseDriverFactory
+import com.bracketcove.graphsudoku.persistence.GameFileStorage
+import com.bracketcove.graphsudoku.persistence.GameRepositoryImpl
+import com.bracketcove.graphsudoku.persistence.UserDataStorage
+import com.bracketcove.graphsudoku.ui.newgame.INewGameContainer
+import com.bracketcove.graphsudoku.ui.newgame.NewGameActivity
 import com.bracketcove.graphsudoku.ui.newgame.NewGameLogic
 import com.bracketcove.graphsudoku.ui.newgame.NewGameViewModel
 
-internal fun buildNewGameLogic(
-    container: NewGameContainer,
-    viewModel: NewGameViewModel,
-    context: Context
+internal fun NewGameActivity.buildNewGameLogic(
+    viewModel: NewGameViewModel
 ): NewGameLogic {
     return NewGameLogic(
-        container,
+        this,
         viewModel,
         GameRepositoryImpl(
-            LocalGameStorageImpl(context.filesDir.path),
-            LocalSettingsStorageImpl(context.settingsDataStore)
-        ),
-        LocalStatisticsStorageImpl(
-            context.statsDataStore
-        ),
-        ProductionDispatcherProvider
+            GameFileStorage(this.filesDir.path),
+            UserDataStorage(DatabaseDriverFactory(this))
+        )
     )
 }

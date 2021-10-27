@@ -16,8 +16,8 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation(compose.ui)
                 implementation(compose.material)
-                implementation(project(":common:compose-ui"))
-                implementation(project(":common:jvm"))
+                implementation(project(":common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-debug:1.5.2")
             }
         }
     }

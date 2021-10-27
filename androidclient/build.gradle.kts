@@ -4,7 +4,6 @@ plugins {
     id("com.android.application")
     kotlin("android")
     id("org.jetbrains.compose")
-    id("com.google.protobuf") version "0.8.12"
 }
 
 android {
@@ -25,13 +24,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":common:compose-ui"))
-    implementation(project(":common:jvm"))
+    implementation(project(":common"))
 
     implementation(compose.material)
     implementation(Deps.AndroidX.AppCompat.appCompat)
     implementation(Deps.AndroidX.Activity.activityCompose)
     implementation(Deps.JetBrains.Kotlin.coroutinesJVM)
     implementation(Deps.JetBrains.Kotlin.coroutinesCore)
-
 }
