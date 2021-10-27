@@ -65,7 +65,7 @@ fun main() = application {
                     gameRepo
                 )
 
-                GraphSudokuTheme {
+                GraphSudokuTheme(darkTheme = true) {
                     ActiveGameScreen(
                         container.logic::onEvent,
                         vm
@@ -83,7 +83,7 @@ fun main() = application {
                     gameRepo
                 )
 
-                GraphSudokuTheme {
+                GraphSudokuTheme(darkTheme = true) {
                     NewGameScreen(
                         container.logic::onEvent,
                         vm

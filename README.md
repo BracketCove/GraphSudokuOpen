@@ -1,13 +1,48 @@
 # Project Overview
 
+###Note:
+1. Please see the multiplatform branch for the latest version.
+2. This project has been made
+
+
 Graph Sudoku is an application which was created with three goals in mind:
 - Teach myself Jetpack Compose
-- Teach myself Graph Datastructure & Algorithms (Directed Colored Graph)
+- Teach myself Graph Datastructures & Algorithms (Directed Colored Graph)
 - Build a simple and fun app
 
-It uses my general purpose software architecture (model-view-nobody-gives-a-****) which is basically just applied separation of concerns.
-
 **If you learned something from this repo, please do me a favour and [download the free app](https://play.google.com/store/apps/details?id=com.bracketcove.graphsudoku).**
+
+#Features
+###Active Game:
+####Android
+[Active Game Android Screenshot](android_active_game.png)
+####Desktop
+[Active Game Desktop Screenshot](desktop_active_game.png)
+
+
+###Create New Game:
+####Android
+[New Game Android Screenshot](android_new_game.png)
+
+####Desktop
+[New Game Desktop Screenshot](desktop_new_game.png)
+
+
+#Architecture:
+I follow my own architecture which consists of these things mainly:
+- Front end platform code (mostly UI stuff): Shared Composables
+- Computation Logic for Sudoku Games: Pure Kotlin STDLib
+- Front end presentation logic: Shared ViewModels and Presentation Logic, Kotlin + Coroutines
+- Back End Business Logic (back end stuff that doesn't know about IO devices): Kotlin suspend functions
+- Back end IO device specific stuff: GameData stored in filestorage, other data in SQLDelight, Kotlin + Coroutines
+- GUI Feature Containers: Activity for Android, Simple Class for Desktop
+
+**This roughly translates into Container, ViewModel, Screen (View), Logic for each feature.** 
+I have only a single backend repository. This is due to the scale of the app being quite small, and the 
+process necessary for creating a new Sudoku Puzzle and storing settings/user records being tightly
+coupled together. 
+
+
 
 # DS & Algos
 
