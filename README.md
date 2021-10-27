@@ -1,6 +1,6 @@
 # Project Overview
 
-###Note:
+### Note:
 1. Please see the multiplatform branch for the latest version.
 2. This project has been made
 
@@ -12,23 +12,23 @@ Graph Sudoku is an application which was created with three goals in mind:
 
 **If you learned something from this repo, please do me a favour and [download the free app](https://play.google.com/store/apps/details?id=com.bracketcove.graphsudoku).**
 
-#Features
-###Active Game:
-####Android
-[Active Game Android Screenshot](android_active_game.png)
-####Desktop
-[Active Game Desktop Screenshot](desktop_active_game.png)
+# Features
+### Active Game:
+#### Android
+![Active Game Android Screenshot](android_active_game.png)
+#### Desktop
+![Active Game Desktop Screenshot](desktop_active_game.png)
 
 
-###Create New Game:
-####Android
-[New Game Android Screenshot](android_new_game.png)
+### Create New Game:
+#### Android
+![New Game Android Screenshot](android_new_game.png)
 
-####Desktop
-[New Game Desktop Screenshot](desktop_new_game.png)
+#### Desktop
+![New Game Desktop Screenshot](desktop_new_game.png)
 
 
-#Architecture:
+# Architecture:
 I follow my own architecture which consists of these things mainly:
 - Front end platform code (mostly UI stuff): Shared Composables
 - Computation Logic for Sudoku Games: Pure Kotlin STDLib
