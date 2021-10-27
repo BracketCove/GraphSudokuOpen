@@ -15,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -393,8 +394,10 @@ fun GameCompleteContent(timerState: Long, isNewRecordState: Boolean) {
             if (isNewRecordState) Image(
                 contentDescription = null,
                 imageVector = Icons.Filled.Star,
-                colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary),
-                modifier = Modifier.size(128.dp)
+                colorFilter = ColorFilter.tint(Color.Black),
+                modifier = Modifier
+                    .size(36.dp, 36.dp)
+                    .absoluteOffset(y = (-16).dp)
             )
         }
 

@@ -1,10 +1,12 @@
 package com.bracketcove.graphsudoku.persistence
 
+import com.bracketcove.graphsudoku.DispatcherProvider
 import com.bracketcove.graphsudoku.domain.DIFFICULTY
 import com.bracketcove.graphsudoku.domain.Settings
 import com.bracketcove.graphsudoku.domain.UserRecords
 import com.bracketcove.graphsuduoku.persistence.AppDatabase
 import com.squareup.sqldelight.EnumColumnAdapter
+import kotlinx.coroutines.withContext
 
 
 private const val DEFAULT_PRIMARY_KEY = 1L
@@ -26,25 +28,29 @@ class UserDataStorage(databaseDriverFactory: DatabaseDriverFactory) {
 
     private val dbQuery = database.appDatabaseQueries
 
-    internal fun createDefaults() {
-        dbQuery.insertDefault(
-            DEFAULT_PRIMARY_KEY,
-            0L,
-            0L,
-            0L,
-            0L,
-            0L,
-            0L,
-            DEFAULT_BOUNDARY,
-            DEFAULT_DIFFICULTY
-        )
+    internal suspend fun createDefaults() = withContext(DispatcherProvider.provideIOContext()) {
+        try {
+            dbQuery.insertDefault(
+                DEFAULT_PRIMARY_KEY,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                0L,
+                DEFAULT_BOUNDARY,
+                DEFAULT_DIFFICULTY
+            )
+        } catch (e: Exception) {
+            println(e)
+        }
     }
 
-    internal fun updateRecord(
+    internal suspend fun updateRecord(
         record: Long,
         boundary: Int,
         difficulty: DIFFICULTY
-    ): UserDataStorageResult {
+    ): UserDataStorageResult = withContext(DispatcherProvider.provideIOContext()) {
         try {
             val oldData = dbQuery.select(DEFAULT_PRIMARY_KEY).executeAsOne()
 
@@ -63,7 +69,7 @@ class UserDataStorage(databaseDriverFactory: DatabaseDriverFactory) {
                     newData.nineHard
                 )
 
-                return UserDataStorageResult.SUCCESS_RECORDS(
+                UserDataStorageResult.SUCCESS_RECORDS(
                     UserRecords(
                         newData.fourEasy,
                         newData.fourMedium,
@@ -74,7 +80,7 @@ class UserDataStorage(databaseDriverFactory: DatabaseDriverFactory) {
                     ), true
                 )
             } else {
-                return UserDataStorageResult.SUCCESS_RECORDS(
+                UserDataStorageResult.SUCCESS_RECORDS(
                     UserRecords(
                         oldData.fourEasy,
                         oldData.fourMedium,
@@ -87,12 +93,12 @@ class UserDataStorage(databaseDriverFactory: DatabaseDriverFactory) {
                 )
             }
         } catch (e: Exception) {
-            return UserDataStorageResult.ERROR(Exception(e.message))
+            UserDataStorageResult.ERROR(Exception(e.message))
         }
     }
 
-    internal fun getRecords(): UserDataStorageResult {
-        return try {
+    internal suspend fun getRecords(): UserDataStorageResult = withContext(DispatcherProvider.provideIOContext()) {
+        try {
             UserDataStorageResult.SUCCESS_RECORDS(
                 dbQuery.selectRecord(DEFAULT_PRIMARY_KEY).executeAsOne().toRecords(),
                 false
@@ -102,10 +108,10 @@ class UserDataStorage(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    internal fun updateSettings(
+    internal suspend fun updateSettings(
         settings: Settings
-    ): UserDataStorageResult {
-        return try {
+    ): UserDataStorageResult = withContext(DispatcherProvider.provideIOContext()) {
+        try {
             dbQuery.updateGameSettings(
                 settings.boundary,
                 settings.difficulty,
@@ -118,8 +124,8 @@ class UserDataStorage(databaseDriverFactory: DatabaseDriverFactory) {
         }
     }
 
-    internal fun getSettings(): UserDataStorageResult {
-        return try {
+    internal suspend fun getSettings(): UserDataStorageResult = withContext(DispatcherProvider.provideIOContext()){
+        try {
             UserDataStorageResult.SUCCESS_SETTINGS(
                 dbQuery.selectGameSettings(DEFAULT_PRIMARY_KEY).executeAsOne().toSettings()
             )

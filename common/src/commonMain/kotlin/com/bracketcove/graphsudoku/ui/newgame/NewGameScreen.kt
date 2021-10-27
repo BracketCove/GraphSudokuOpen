@@ -159,15 +159,18 @@ fun StatisticsView(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceAround
     ) {
 
-        Column {
+        Column(Modifier.weight(1f)) {
             Text(
                 text = "4x4",
                 style = statsLabel.copy(textColorLight),
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(bottom = 4.dp)
+                    .wrapContentHeight()
+                    .fillMaxWidth()
+                    .padding(bottom = 4.dp),
+                textAlign = TextAlign.Center
             )
 
             StatsColumn(
@@ -183,13 +186,15 @@ fun StatisticsView(
                 .width(1.dp)
         )
 
-        Column {
+        Column(Modifier.weight(1f)) {
             Text(
                 text = "9x9",
                 style = statsLabel.copy(color = textColorLight),
                 modifier = Modifier
-                    .wrapContentSize()
+                    .wrapContentHeight()
+                    .fillMaxWidth()
                     .padding(bottom = 4.dp),
+                textAlign = TextAlign.Center
             )
 
             StatsColumn(

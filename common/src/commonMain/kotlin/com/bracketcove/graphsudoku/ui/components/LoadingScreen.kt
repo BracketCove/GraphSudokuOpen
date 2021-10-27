@@ -29,12 +29,7 @@ fun LoadingScreen() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                //TODO find out how to show ic_launcher in shared project
-                imageVector = Icons.Default.Done,
-                modifier = Modifier.size(128.dp),
-                contentDescription = STR_LOGO_DESCRIPTION
-            )
+            AppIcon()
 
             LinearProgressIndicator(
                 color = lightGrey,

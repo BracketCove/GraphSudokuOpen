@@ -28,7 +28,7 @@ SET boundary = :boundary, difficulty = :difficulty
 WHERE id = :id;
 
 insertDefault:
-INSERT OR IGNORE INTO UserData(id,
+INSERT INTO UserData(id,
 fourEasy, fourMedium, fourHard,
 nineEasy, nineMedium, nineHard,
 boundary, difficulty
