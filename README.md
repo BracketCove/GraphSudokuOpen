@@ -1,4 +1,5 @@
 # Project Overview
+NOTE: This is the starting point branch, which I start from during the live rebuild.
 
 ### Note:
 Please see the multiplatform branch for the latest version.
