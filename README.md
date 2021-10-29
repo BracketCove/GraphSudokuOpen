@@ -1,8 +1,7 @@
 # Project Overview
 
 ### Note:
-1. Please see the multiplatform branch for the latest version.
-2. This project has been made
+Please see the multiplatform branch for the latest version.
 
 
 Graph Sudoku is an application which was created with three goals in mind:
