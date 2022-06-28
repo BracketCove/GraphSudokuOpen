@@ -13,15 +13,11 @@ internal fun Activity.makeToast(message: String) {
     ).show()
 }
 
-internal fun Long.toTime(): String {
+inteernal fun Long.toTime(): String {
     if (this >= 3600) return "+59:59"
-    var minutes = ((this % 3600) / 60).toString()
-    if (minutes.length == 1) minutes = "0$minutes"
-    var seconds = (this % 60).toString()
-    if (seconds.length == 1) seconds = "0$seconds"
-
-
-    return String.format("$minutes:$seconds")
+    var minutes = (this % 3600) / 60
+    var seconds = this % 60
+    return "%02d:%02d".format(minutes, seconds)
 }
 
 internal val Difficulty.toLocalizedResource: Int
